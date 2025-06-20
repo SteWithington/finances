@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TEST Financial Assets</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    <div class="mode-selector">
+        <label>Mode:</label>
+        <label><input type="radio" name="mode" value="light" checked> Light</label>
+        <label><input type="radio" name="mode" value="dark"> Dark</label>
+        <label><input type="radio" name="mode" value="system"> System</label>
+    </div>
+    <h1>TEST Financial Assets</h1>
+    <form id="financesForm">
+
+        <table>
+        <tr>
+            <td><b>Current Date:</b></td>
+            <td><b></b></td>
+            <td id="currentDate" class="output"></td>
+        </tr>
+        <tr>
+            <td><b>Current GBP/AUD Exchange</b></td>
+            <td colspan="2">
+            <span id="gbpToAudExchangeRate"></span>
+            </td>
+        </tr>
+        </table>
+
+        <!-- New right-aligned refresh button container -->
+        <div class="refresh-button-container">
+        <button id="refreshExchangeRateBtn" type="button">Refresh</button>
+        </div>
+        <table id="totalSummaryTable" style="font-weight: bold;">
+          <thead>
+            <tr>
+              <th colspan="3">TOTAL SUMMARY (AUD $)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Bank Accounts Total</td>
+              <td id="totalBankAccountsAud"></td>
+            </tr>
+            <tr>
+              <td>Unrealised Gains Total</td>
+              <td id="totalUnrealisedGains"></td>
+            </tr>
+            <tr>
+              <td>Liabilities Total Balance</td>
+              <td id="totalLiabilitiesBalance"></td>
+            </tr>
+            <tr>
+              <td>Overall Current Position</td>
+              <td id="overallCurrentPosition"></td>
+            </tr>
+          </tbody>
+        </table>
+        <table>
+        <thead>
+            <tr>
+            <th colspan="3">Income ($)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Salary Pre Tax ($)</td>
+                <td style="text-align: center;">
+                    <label>
+                    <input type="radio" name="salaryType" value="base" checked /> Base
+                    </label>
+                    <label style="margin-left: 15px;">
+                    <input type="radio" name="salaryType" value="package" /> Package
+                    </label>
+                </td>
+                <td>
+                    <input type="number" id="salaryPreTax" step="0.01" />
+                </td>
+            </tr>
+            <tr id="packageDeductionRow" class="disabled-row">
+                <td>Employer Super Contribution (%)</td>
+                <td>
+                    <input type="number" id="packageDeductionPercent" min="0" max="100" step="0.1" style="width: 80px; margin-left: 10px;" />
+                </td>
+                <td id="packageDeduction" class="output"></td>
+            </tr>
+            <tr>
+                <td>Salary Post Tax ($)</td>
+                <td></td>
+                <td id="salaryPostTax" class="output"></td>
+            </tr>
+            <tr>
+                <td>Monthly Wage Post Tax ($)</td>
+                <td></td>
+                <td id="monthlyWagePostTax" class="output"></td>
+            </tr>
+        </tbody>
+        </table>
+        <br>
+        <table class="bank-table">
+            <thead>
+                <tr>
+                    <th colspan="3">Bank Accounts</th>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th>GBP (£)</th>
+                    <th>AUD ($)</th>
+                </tr>
+            </thead>
+        <tbody>
+            <tr>
+                <td>UK Bank Account</td>
+                <td><input type="number" id="gbpInputUkBankAccountGbp" step="0.01"></td>
+                <td id="audOutputUkBankAccount" class="output"></td>
+            </tr>
+            <tr>
+                <td>UK Savings Account</td>
+                <td><input type="number" id="gbpInputUkSavingsAccountGbp" step="0.01"></td>
+                <td id="audOutputUkSavingsAccount" class="output"></td>
+            </tr>
+            <tr>
+                <td>UK ISA</td>
+                <td><input type="number" id="gbpInputUkIsaAccountGbp" step="0.01"></td>
+                <td id="audOutputUkIsaAccount" class="output"></td>
+            </tr>
+            <tr>
+                <td>AUS Bank Account</td>
+                <td id="gbpOutputAusBankAccount" class="output"></td>
+                <td><input type="number" id="audInputAusBankAccountAud" step="0.01"></td>
+            </tr>
+            <tr>
+                <td>AUS Savings Account</td>
+                <td id="gbpOutputAusSavingsAccount" class="output"></td>
+                <td><input type="number" id="audInputAusSavingsAccountAud" step="0.01"></td>
+            </tr>
+            <tr>
+                <td><b>TOTAL</b></td>
+                <td id="gbpAssetsTotal" class="output"></td>
+                <td id="audAssetsTotal" class="output"></td>
+            </tr>
+        </table>
+        <br>
+        <div id="unrealisedGainsSection">
+        <table id="gainsTable">
+            <thead>
+                <tr>
+                    <th colspan="3">Unrealised Gains ($)</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <th>Asset</th>
+                    <th>Payments Remaining</th>
+                    <th>Current Valuation</th>
+                    <th>Equity</th>
+                </tr>
+            </thead>
+            <tbody id="gainsTableBody">
+            </tbody>
+        </table>
+        <button id="addGainsRowBtn" type="button">Add Unrealised Gain</button>
+        </div>
+        <br>
+        <br>
+        <div id="liabilitiesSection">
+        <table id="liabilitiesTable">
+          <thead>
+            <tr>
+              <th colspan="3">Liabilities ($)</th>
+              <th></th>
+              <th></th>
+              <th></th>
+            </tr>
+            <tr>
+              <th>Liability Name</th>
+              <th>Initial Amount Owed</th>
+              <th>Paid So Far</th>
+              <th>Balance</th>
+            </tr>
+          </thead>
+            <tbody id="liabilitiesTableBody">
+            </tbody>
+        </table>
+        <button id="addLiabilityRowBtn" type="button">Add Liability</button>
+        </div>
+        <br>
+        <br>
+        <div class="save-button-container">
+            <button type="submit" id="saveBtn">Save Changes</button>
+        </div>
+    </form>
+
+<script>
+document.getElementById('financesForm').addEventListener('submit', function(event) {
+  event.preventDefault();
+
+  const exchangeRate = document.getElementById('gbpToAudExchangeRate').value;
+  const salaryPreTax = document.getElementById('salaryPreTax').value;
+
+//   localStorage.setItem('gbpToAudExchangeRate', exchangeRate);
+  localStorage.setItem('salaryPreTax', salaryPreTax);
+
+  // === Store Unrealised Gains rows, skipping empty rows ===
+  const rows = document.querySelectorAll('#gainsTableBody tr');
+  const gainsData = [];
+
+  rows.forEach(row => {
+    const inputs = row.querySelectorAll('input');
+    if (inputs.length >= 3) {
+      const assetName = inputs[0].value.trim();
+      const remainingPayments = parseFloat(inputs[1].value) || 0;
+      const currentValuation = parseFloat(inputs[2].value) || 0;
+
+      if (assetName !== '' || remainingPayments !== 0 || currentValuation !== 0) {
+        gainsData.push({
+          assetName,
+          remainingPayments,
+          currentValuation
+        });
+      }
+    }
+  });
+
+  localStorage.setItem('unrealisedGains', JSON.stringify(gainsData));
+
+  alert("Changes Saved Successfully");
+});
+
+</script>
+<script>
+  (function() {
+    const modeRadios = document.querySelectorAll('.mode-selector input[name="mode"]');
+    const body = document.body;
+
+    // Load saved mode from localStorage or default to system
+    function getSavedMode() {
+      return localStorage.getItem('mode') || 'system';
+    }
+
+    // Apply dark/light based on selected mode
+    function applyMode(mode) {
+      if (mode === 'dark') {
+        body.classList.add('dark-mode');
+      } else if (mode === 'light') {
+        body.classList.remove('dark-mode');
+      } else if (mode === 'system') {
+        // Use system preference
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          body.classList.add('dark-mode');
+        } else {
+          body.classList.remove('dark-mode');
+        }
+      }
+    }
+
+    // Listen for system changes (only matters if system mode is active)
+    if (window.matchMedia) {
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+        if (getSavedMode() === 'system') {
+          applyMode('system');
+        }
+      });
+    }
+
+    // Initialize radio buttons and mode on page load
+    function init() {
+      const savedMode = getSavedMode();
+
+      // Set checked radio
+      modeRadios.forEach(radio => {
+        radio.checked = radio.value === savedMode;
+      });
+
+      applyMode(savedMode);
+    }
+
+    // Listen for user changes
+    modeRadios.forEach(radio => {
+      radio.addEventListener('change', () => {
+        const selectedMode = document.querySelector('.mode-selector input[name="mode"]:checked').value;
+        localStorage.setItem('mode', selectedMode);
+        applyMode(selectedMode);
+      });
+    });
+
+    init();
+  })();
+</script>
+
+<script type="module" src="main.js"></script>
+</body>
+</html>
