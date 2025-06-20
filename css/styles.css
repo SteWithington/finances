@@ -127,6 +127,16 @@ td b {
     min-width: 150px;
 }
 
+.positive-amount {
+  color: black; /* or whatever your default text color is */
+  font-weight: 700;
+}
+
+.negative-amount {
+  color: #d32f2f; /* red */
+  font-weight: 700;
+}
+
 /* === Inputs === */
 td input[type="number"] {
     float: right;
@@ -203,6 +213,11 @@ button:hover {
 
 button:active {
     transform: scale(0.97);
+}
+
+#totalLiabilitiesBalance {
+    font-weight: 700;
+    color: #d32f2f; /* Red for liabilities */
 }
 
 #addGainsRowBtn, #addLiabilitiesRowBtn {

@@ -178,6 +178,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  function setAmountClass(elementId, amount) {
+  const el = document.getElementById(elementId);
+  if (!el) return;
+  
+  if (amount < 0) {
+    el.classList.add('negative-amount');
+    el.classList.remove('positive-amount');
+  } else {
+    el.classList.add('positive-amount');
+    el.classList.remove('negative-amount');
+  }
+  }
+
   // 2. Unrealised Gains Total (sum currentValuation in gainsTable)
   const gainsRows = document.querySelectorAll('#gainsTableBody tr');
   let totalGains = 0;
@@ -207,6 +220,10 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('totalUnrealisedGains').textContent = formatCurrency(totalGains);
   document.getElementById('totalLiabilitiesBalance').textContent = formatCurrency(totalLiabilities);
   document.getElementById('overallCurrentPosition').textContent = formatCurrency(overallPosition);
+
+  // Set classes based on value
+  setAmountClass('totalBankAccountsAud', totalBankAud);
+  setAmountClass('overallCurrentPosition', overallPosition);
   }
 
   // Call updateTotals on form submit and also after adding/removing rows or inputs changed
