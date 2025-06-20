@@ -214,7 +214,13 @@ tr:has(#totalBankAccountsAud) > td:first-child,
 tr:has(#totalUnrealisedGains) > td:first-child,
 tr:has(#totalLiabilitiesBalance) > td:first-child {
   font-weight: normal !important;
-  color: #333; /* optional: normal color */
+  color: #333;
+}
+
+body.dark-mode tr:has(#totalBankAccountsAud) > td:first-child,
+body.dark-mode tr:has(#totalUnrealisedGains) > td:first-child,
+body.dark-mode tr:has(#totalLiabilitiesBalance) > td:first-child {
+  color: #e0e0e0 !important;
 }
 
 /* Values: td with those specific IDs */
